@@ -1,0 +1,5 @@
+REPTE,ID,ENUNCIAT,RESPOSTA,CODI,PUNTUACIO
+1,1,Quin es el SGBD mes utilitzat?,MySQL,1590,100
+1,2,Quin any va sortir MySQL?,1995,7842,200
+1,3,Comanda per donar permissos als usuaris,Grant,5178,300
+1,4,Quin codi d’e error indica que un cursor no es valid?,ORA-01001,3254,400
