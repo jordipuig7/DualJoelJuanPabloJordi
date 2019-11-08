@@ -4,25 +4,31 @@ import os;
 # -------------------------- INICI DE SESSIÓ -------------------------------
 
 def iniciarsessio(mycursor):
-    print("     Iniciar sessió")
-    print("===========================")
+    print("Iniciar sessió       E --> Exit")
+    print("================================")
     usuari = (input("Usuari: "))
-    mycursor = Connector.dbConnection.cursor()
-    mycursor.execute("select usuari from users where usuari = \"" + usuari + "\";")
-    myresult = mycursor.fetchall()
-    try:
-        if (str(myresult[0][0]) == usuari):
-            print("Usuari Correcte")
-            contras = input("Contrasenya: ")
-            mycursor.execute("select contrasenya from users where contrasenya = \"" + contras + "\";")
-            myresult = mycursor.fetchall()
-            x = myresult
-            if (str(x[0][0]) == contras ):
-                os.system('cls')
-                print("Hola " + usuari)
-                Menu3(usuari, contras, mycursor);
-    except IndexError:
-        print("Usuari o Contrasenya son incorrectes")
+    if (usuari != "E"):
+        mycursor = Connector.dbConnection.cursor()
+        mycursor.execute("select usuari from users where usuari = \"" + usuari + "\";")
+        myresult = mycursor.fetchall()
+        try:
+            if (str(myresult[0][0]) == usuari):
+                print("Usuari Correcte")
+                contras = input("Contrasenya: ")
+                if (contras != "E"):
+                    mycursor.execute("select contrasenya from users where contrasenya = \"" + contras + "\";")
+                    myresult = mycursor.fetchall()
+                    x = myresult
+                    if (str(x[0][0]) == contras ):
+                        os.system('cls')
+                        print("Hola " + usuari)
+                        Menu3(usuari, contras, mycursor);
+                else:
+                    os.system('cls')
+        except IndexError:
+            print("Usuari o Contrasenya son incorrectes")
+    else:
+        os.system('cls')
 
 # -------------------------- MENU INICI DE SESSIÓ -------------------------------
 
@@ -45,7 +51,7 @@ def Menu3(usuari, contras, mycursor):
         print("T --> Tancar Sessió")
         opcio2 = (input("OPCIO -->"))
         cont = 0 
-        mycursor.execute("select numero from repte")
+        mycursor.execute("select num_repte from users_repte where fet = 0 AND users_usuari = \"" + usuari + "\" group by num_repte;")
         myresult = mycursor.fetchall()
         for x in myresult:
             if opcio2 == str(x[0]):
@@ -70,6 +76,9 @@ def Menu3(usuari, contras, mycursor):
                 contras = ""
                 os.system('cls')
                 entrada = False;
+            else:
+                os.system('cls')
+                print("Opció no valida")
         sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
         val = punttotal, usuari, contras
         mycursor.execute(sql, val)

@@ -4,25 +4,36 @@ import os;
 # -------------------------- CREACIO DE L'USUARI A LA BADE DE DADES -------------------------------
 
 def crearUsuari(mycursor):
-    print("     CREACIó D'USUARI")
-    print("===========================")
+    print("CREACIó D'USUARI      E --> Exit")
+    print("================================")
     usuari = (input("Usuari: "))
-    contra = (input("Contrasenya: "))
-    contre = (input("Repeteix Contrasenya: "))
-    if(contra == contre):
-        mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0);")
-        Connector.dbConnection.commit()
-        mycursor.execute("select numero from repte")
-        myresult = mycursor.fetchall()
-        for x in myresult:
-            mycursor.execute("select id from preguntes where numero_repte = " + str(x[0]))
-            myresult = mycursor.fetchall()
-            for m in myresult:
-                mycursor.execute("insert into users_repte values(\"" + usuari + "\", " + str(x[0]) + ", " + str(m[0]) + ", 0);" );
-                Connector.dbConnection.commit()
+    if (usuari != "E"):
+        contra = (input("Contrasenya: "))
+        if (contra != "E"):
+            contre = (input("Repeteix Contrasenya: "))
+            if (contre != "E"):
+                if(usuari == "E" or contra == "E" or contre == "E"):
+                    os.system('cls')
+                elif(contra == contre):
+                    mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0);")
+                    Connector.dbConnection.commit()
+                    mycursor.execute("select numero from repte")
+                    myresult = mycursor.fetchall()
+                    for x in myresult:
+                        mycursor.execute("select id from preguntes where numero_repte = " + str(x[0]))
+                        myresult = mycursor.fetchall()
+                        for m in myresult:
+                            mycursor.execute("insert into users_repte values(\"" + usuari + "\", " + str(x[0]) + ", " + str(m[0]) + ", 0);" );
+                            Connector.dbConnection.commit()
+                else:
+                    os.system('cls')
+                    print("Ha hagut algun error")
+            else:
+                os.system('cls')
+        else:
+            os.system('cls')
     else:
         os.system('cls')
-        print("Ha hagut algun error")
 
 # -------------------------- ELIMINAR USUARI -------------------------------
 
