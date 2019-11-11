@@ -2,6 +2,7 @@ import os;
 import Connector;
 import OpcionsUsuari;
 import IniciSessio;
+import Ranking;
 
 # Comença el programa
 
@@ -26,7 +27,7 @@ def Principi():
             IniciSessio.iniciarsessio(mycursor)
         elif (opcio == "3"):
             os.system('cls')
-            ranking()
+            Ranking.Ranking(mycursor)
         elif (opcio == "4"):
             os.system('cls')
             OpcionsUsuari.eliminarusuari(mycursor)

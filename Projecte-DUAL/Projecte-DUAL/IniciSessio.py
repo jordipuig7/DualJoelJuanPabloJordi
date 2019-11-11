@@ -106,7 +106,7 @@ def infousuari(usuari, contras, mycursor):
         for y in resolt:
             if(str(myresult[0][0]) == str(y[1])):
                 print("Repte " + str(myresult[0][0]) +" " + str(myresult[0][1])+ "/" + str(y[0]))
-    opcio = (input("E --> Exit"))
+    opcio = (input("E for Exit --->"))
     if(opcio != "E"):
         os.system('cls')
         infousuari(usuari, contras, mycursor)
