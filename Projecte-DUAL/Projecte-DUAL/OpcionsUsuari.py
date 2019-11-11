@@ -15,8 +15,14 @@ def crearUsuari(mycursor):
                 if(usuari == "E" or contra == "E" or contre == "E"):
                     os.system('cls')
                 elif(contra == contre):
-                    mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0);")
-                    Connector.dbConnection.commit()
+                    mycursor.execute("SELECT * FROM users where usuari = \"" + usuari + "\"")
+                    usuaris = mycursor.fetchall()
+                    if not usuaris:
+                        mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0);")
+                        Connector.dbConnection.commit()
+                    else: 
+                        os.system('cls')
+                        print("usuari repetit")
                     #mycursor.execute("select numero from repte")
                     #myresult = mycursor.fetchall()
                     #for x in myresult:
@@ -34,6 +40,16 @@ def crearUsuari(mycursor):
             os.system('cls')
     else:
         os.system('cls')
+
+  #  def comprovarusuari(mysursor):
+        
+  #     mycursor.execute("SELECT * FROM users")
+   #     usuaris = mycursor.fetchall()
+    #    for usuari in usuaris:
+     #       print("usuari repetit")
+      #      check = true
+
+
 
 # -------------------------- ELIMINAR USUARI -------------------------------
 
