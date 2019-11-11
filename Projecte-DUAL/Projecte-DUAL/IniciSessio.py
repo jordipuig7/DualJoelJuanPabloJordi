@@ -38,6 +38,7 @@ def Menu3(usuari, contras, mycursor):
         punttotal = 0
         print("     MENU")
         print("===============")
+        print("0 --> Reptes Fets")
         mycursor.execute("select numero from repte")
         myresult = mycursor.fetchall()
         for x in myresult:
@@ -47,6 +48,7 @@ def Menu3(usuari, contras, mycursor):
             for y in sipo:
                 if (str(y[0]) == "0"):
                     print(str(x[0]) + "--> Repte " + str(x[0]))
+        print("I --> Informacio d'usuari")
         print("R--> Ranking")
         print("T --> Tancar Sessió")
         opcio2 = (input("OPCIO -->"))
@@ -76,6 +78,9 @@ def Menu3(usuari, contras, mycursor):
                 contras = ""
                 os.system('cls')
                 entrada = False;
+            elif (opcio2 == "I"):
+                os.system('cls')
+                infousuari(usuari, contras, mycursor);
             else:
                 os.system('cls')
                 print("Opció no valida")
@@ -84,7 +89,26 @@ def Menu3(usuari, contras, mycursor):
         mycursor.execute(sql, val)
         Connector.dbConnection.commit()
 
-            #sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
-    #val = punttotal, usuari, contras
-    # mycursor.execute(sql, val)
-   # Connector.dbConnection.commit()
+# -------------------------- INDORMACIO D'USUARI -------------------------------
+
+def infousuari(usuari, contras, mycursor):
+    entrada = True
+    print("Informació d'usuari")
+    print("===================")
+    print("Nickname:  " + usuari)
+    print("     Reptes")
+    print("===================")
+    mycursor.execute("select num_repte, count(fet) as \"LOL""\" from users_repte where fet = 1 AND users_usuari = \""+ usuari + "\"group by num_repte;")
+    myresult = mycursor.fetchall()
+    for x in myresult:
+        mycursor.execute("select count(fet), num_repte from users_repte where users_usuari = \""+ usuari + "\" group by num_repte")
+        resolt = mycursor.fetchall()
+        for y in resolt:
+            if(str(myresult[0][0]) == str(y[1])):
+                print("Repte " + str(myresult[0][0]) +" " + str(myresult[0][1])+ "/" + str(y[0]))
+    opcio = (input("E --> Exit"))
+    if(opcio != "E"):
+        os.system('cls')
+        infousuari(usuari, contras, mycursor)
+    else:
+        os.system('cls')
