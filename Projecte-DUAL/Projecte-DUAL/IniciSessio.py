@@ -43,11 +43,14 @@ def Menu3(usuari, contras, mycursor):
         myresult = mycursor.fetchall()
         for x in myresult:
             porfavor = Connector.dbConnection.cursor()
-            porfavor.execute("select fet from users_repte where users_usuari =\"" + usuari + "\" AND num_repte = " + str(x[0]) + " group by fet order by fet")
-            sipo = porfavor.fetchall()
-            for y in sipo:
-                if (str(y[0]) == "0"):
-                    print(str(x[0]) + "--> Repte " + str(x[0]))
+            porfavor.execute("select max(id) from preguntes where numero_repte =" + str(x[0]))
+            maxid = porfavor.fetchall()
+            for y in maxid:
+                segundo= Connector.dbConnection.cursor()
+                segundo.execute("select users_usuari from users_repte where users_usuari = \"" + usuari + "\" AND num_repte = "+ str(x[0])+" AND id_pregunta = " + str(y[0]))
+                sip = porfavor.fetchone()
+                if(sip == None):
+                    print(str(x[0]) +"--> Repte " + str(x[0]))
         print("I --> Informacio d'usuari")
         print("R--> Ranking")
         print("T --> Tancar Sessió")
