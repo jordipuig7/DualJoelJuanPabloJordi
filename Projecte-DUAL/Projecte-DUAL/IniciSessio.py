@@ -48,7 +48,7 @@ def Menu3(usuari, contras, mycursor):
             for y in maxid:
                 segundo= Connector.dbConnection.cursor()
                 segundo.execute("select users_usuari from users_repte where users_usuari = \"" + usuari + "\" AND num_repte = "+ str(x[0])+" AND id_pregunta = " + str(y[0]))
-                sip = porfavor.fetchone()
+                sip = segundo.fetchone()
                 if(sip == None):
                     print(str(x[0]) +"--> Repte " + str(x[0]))
         print("I --> Informacio d'usuari")
@@ -56,10 +56,11 @@ def Menu3(usuari, contras, mycursor):
         print("T --> Tancar Sessió")
         opcio2 = (input("OPCIO -->"))
         cont = 0 
-        mycursor.execute("select num_repte from users_repte where fet = 0 AND users_usuari = \"" + usuari + "\" group by num_repte;")
-        myresult = mycursor.fetchall()
+        nou = Connector.dbConnection.cursor()
+        nou.execute("select num_repte from users_repte where users_usuari = \"" + usuari + "\" group by num_repte;")
+        myresult = nou.fetchall()
         for x in myresult:
-            if opcio2 == str(x[0]):
+            if (opcio2 == str(x[0])):
                 mycursor.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + opcio2)
                 resolt = mycursor.fetchall()
                 resp = ""
