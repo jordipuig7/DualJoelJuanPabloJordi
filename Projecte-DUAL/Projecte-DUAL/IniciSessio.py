@@ -8,7 +8,6 @@ def iniciarsessio(mycursor):
     print("================================")
     usuari = (input("Usuari: "))
     if (usuari != "E"):
-        mycursor = Connector.dbConnection.cursor()
         mycursor.execute("select usuari from users where usuari = \"" + usuari + "\";")
         myresult = mycursor.fetchall()
         try:
@@ -55,42 +54,44 @@ def Menu3(usuari, contras, mycursor):
         print("R--> Ranking")
         print("T --> Tancar Sessió")
         opcio2 = (input("OPCIO -->"))
-        cont = 0 
-        conector1 = Connector.dbConnection.cursor()
-        conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + opcio2)
-        guardar1 = conector1.fetchall()
-        if(opcio2 == "T"):
+        cont = 0
+        try:
+            if(int(opcio2) == int(opcio2)):
+                print("ENTRA")
+                conector = Connector.dbConnection.cursor()
+                conector.execute("select max(id_pregunta) from users_repte where users_usuari = \"" + usuari +"\" and num_repte = " + opcio2 )
+                guardar = conector.fetchone()
+                conector1 = Connector.dbConnection.cursor()
+                conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + opcio2 + "and id > " + str(guardar[0]))
+                guardar1 = conector1.fetchall()
+                for x in guardar1:
+                    resp = ""
+                    puntuacio = x[3]
+                    while resp != str(x[2]):
+                        resp = input(str(x[0]))
+                        print("E - Exit")
+                        if resp == str(x[2]):
+                            print("ENCERT")
+                            punttotal = punttotal + puntuacio
+                            print(punttotal)
+                        elif resp == "E":
+                            Menu3(usuari, contras)
+                        else:
+                            print("FALLAT")
+        except :
+            os.system('cls')
+            if(opcio2 == "T"):
                 usuari = ""
                 contras = ""
                 os.system('cls')
                 entrada = False;
-        elif (opcio2 == "I"):
+            elif (opcio2 == "I"):
                 os.system('cls')
                 infousuari(usuari, contras, mycursor);
-        for x in guardar1:
-            if (opcio2 == str(x[0])):
-                mycursor.execute()
-                resolt = mycursor.fetchall()
-                resp = ""
-                puntuacio = a[3]
-                while resp != str(a[2]):
-                    resp = input(str(a[0]))
-                    print("E - Exit")
-                    if resp == str(a[2]):
-                        print("ENCERT")
-                        punttotal = punttotal + puntuacio
-                        print(punttotal)
-                    elif resp == "E":
-                        Menu3(usuari, contras)
-                    else:
-                        print("FALLAT")
-            else:
-                os.system('cls')
-                print("Opció no valida")
-        sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
-        val = punttotal, usuari, contras
-        mycursor.execute(sql, val)
-        Connector.dbConnection.commit()
+        #sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
+        #val = punttotal, usuari, contras
+        #mycursor.execute(sql, val)
+        #Connector.dbConnection.commit()
 
 # -------------------------- INDORMACIO D'USUARI -------------------------------
 
