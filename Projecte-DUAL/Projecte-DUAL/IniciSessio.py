@@ -16,7 +16,7 @@ def iniciarsessio(mycursor):
                 print("Usuari Correcte")
                 contras = input("Contrasenya: ")
                 if (contras != "E"):
-                    mycursor.execute("select contrasenya from users where contrasenya = \"" + contras + "\";")
+                    mycursor.execute("select contrasenya from users where contrasenya = \"" + contras + "\" AND usuari =\"" + usuari + "\"")
                     myresult = mycursor.fetchall()
                     x = myresult
                     if (str(x[0][0]) == contras ):
@@ -44,47 +44,46 @@ def Menu3(usuari, contras, mycursor):
         for x in myresult:
             porfavor = Connector.dbConnection.cursor()
             porfavor.execute("select max(id) from preguntes where numero_repte =" + str(x[0]))
-            maxid = porfavor.fetchall()
-            for y in maxid:
-                segundo= Connector.dbConnection.cursor()
-                segundo.execute("select users_usuari from users_repte where users_usuari = \"" + usuari + "\" AND num_repte = "+ str(x[0])+" AND id_pregunta = " + str(y[0]))
-                sip = segundo.fetchone()
-                if(sip == None):
-                    print(str(x[0]) +"--> Repte " + str(x[0]))
+            maxid = porfavor.fetchone()
+            segundo= Connector.dbConnection.cursor()
+            segundo.execute("select users_usuari from users_repte where users_usuari = \"" + usuari + "\" AND num_repte = "+ str(x[0])+" AND id_pregunta = " + str(maxid[0]))
+            sip = segundo.fetchone()
+            if(sip == None):
+                print(str(x[0]) +"--> Repte " + str(x[0]))
+                # TANCAR CONEXIONS
         print("I --> Informacio d'usuari")
         print("R--> Ranking")
         print("T --> Tancar Sessió")
         opcio2 = (input("OPCIO -->"))
         cont = 0 
-        nou = Connector.dbConnection.cursor()
-        nou.execute("select num_repte from users_repte where users_usuari = \"" + usuari + "\" group by num_repte;")
-        myresult = nou.fetchall()
-        for x in myresult:
-            if (opcio2 == str(x[0])):
-                mycursor.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + opcio2)
-                resolt = mycursor.fetchall()
-                resp = ""
-                for a in resolt:
-                    puntuacio = a[3]
-                    while resp != str(a[2]):
-                        resp = input(str(a[0]))
-                        print("E - Exit")
-                        if resp == str(a[2]):
-                            print("ENCERT")
-                            punttotal = punttotal + puntuacio
-                            print(punttotal)
-                        elif resp == "E":
-                            Menu3(usuari, contras)
-                        else:
-                            print("FALLAT")
-            elif(opcio2 == "T"):
+        conector1 = Connector.dbConnection.cursor()
+        conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + opcio2)
+        guardar1 = conector1.fetchall()
+        if(opcio2 == "T"):
                 usuari = ""
                 contras = ""
                 os.system('cls')
                 entrada = False;
-            elif (opcio2 == "I"):
+        elif (opcio2 == "I"):
                 os.system('cls')
                 infousuari(usuari, contras, mycursor);
+        for x in guardar1:
+            if (opcio2 == str(x[0])):
+                mycursor.execute()
+                resolt = mycursor.fetchall()
+                resp = ""
+                puntuacio = a[3]
+                while resp != str(a[2]):
+                    resp = input(str(a[0]))
+                    print("E - Exit")
+                    if resp == str(a[2]):
+                        print("ENCERT")
+                        punttotal = punttotal + puntuacio
+                        print(punttotal)
+                    elif resp == "E":
+                        Menu3(usuari, contras)
+                    else:
+                        print("FALLAT")
             else:
                 os.system('cls')
                 print("Opció no valida")
