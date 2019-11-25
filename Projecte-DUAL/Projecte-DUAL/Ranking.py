@@ -17,4 +17,3 @@ def Ranking(mycursor):
         Ranking(mycursor)
     else:
         os.system('cls')
-        
