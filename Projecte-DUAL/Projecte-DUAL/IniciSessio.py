@@ -74,6 +74,9 @@ def Menu3(usuari, contras, mycursor):
                             print("ENCERT")
                             punttotal = punttotal + puntuacio
                             print(punttotal)
+                            conector3 = Connector.dbConnection.cursor()
+                            conector3.execute("")#Actualitzar taula users_repte
+                
                         elif resp == "E":
                             Menu3(usuari, contras)
                         else:
@@ -93,7 +96,7 @@ def Menu3(usuari, contras, mycursor):
         mycursor.execute(sql, val)
         Connector.dbConnection.commit()
 
-# -------------------------- INDORMACIO D'USUARI -------------------------------
+# -------------------------- INFORMACIO D'USUARI -------------------------------
 
 def infousuari(usuari, contras, mycursor):
     entrada = True
