@@ -62,15 +62,15 @@ def Menu3(usuari, contras, mycursor):
                 conector.execute("select max(id_pregunta) from users_repte where users_usuari = \"" + usuari +"\" and num_repte = " + opcio2 )
                 guardar = conector.fetchone()
                 conector1 = Connector.dbConnection.cursor()
-                conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + opcio2 + "and id > " + str(guardar[0]))
+                conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + str(opcio2) + " and id >" + str(guardar[0]))
                 guardar1 = conector1.fetchall()
-                for x in guardar1:
+                for r in guardar1:
                     resp = ""
-                    puntuacio = x[3]
-                    while resp != str(x[2]):
-                        resp = input(str(x[0]))
+                    puntuacio = r[3]
+                    while resp != str(r[2]):
+                        resp = input(str(r[0]))
                         print("E - Exit")
-                        if resp == str(x[2]):
+                        if resp == str(r[2]):
                             print("ENCERT")
                             punttotal = punttotal + puntuacio
                             print(punttotal)
@@ -88,10 +88,10 @@ def Menu3(usuari, contras, mycursor):
             elif (opcio2 == "I"):
                 os.system('cls')
                 infousuari(usuari, contras, mycursor);
-        #sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
-        #val = punttotal, usuari, contras
-        #mycursor.execute(sql, val)
-        #Connector.dbConnection.commit()
+        sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
+        val = punttotal, usuari, contras
+        mycursor.execute(sql, val)
+        Connector.dbConnection.commit()
 
 # -------------------------- INDORMACIO D'USUARI -------------------------------
 
