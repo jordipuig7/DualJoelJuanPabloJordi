@@ -7,39 +7,34 @@ def crearUsuari(mycursor):
     print("CREACIó D'USUARI      E --> Exit")
     print("================================")
     usuari = (input("Usuari: "))
-    if (usuari != "E"):
-        contra = (input("Contrasenya: "))
-        if (contra != "E"):
-            contre = (input("Repeteix Contrasenya: "))
-            if (contre != "E"):
-                if(usuari == "E" or contra == "E" or contre == "E"):
-                    os.system('cls')
-                elif(contra == contre):
-                    mycursor.execute("SELECT * FROM users where usuari = \"" + usuari + "\"")
-                    usuaris = mycursor.fetchall()
-                    if not usuaris:
+    mycursor.execute("SELECT * FROM users where usuari = \"" + usuari + "\"")
+    usuaris1 = mycursor.fetchall()
+    if not usuaris1:
+        if (usuari != "E"):
+            contra = (input("Contrasenya: "))
+            if (contra != "E"):
+                contre = (input("Repeteix Contrasenya: "))
+                if (contre != "E"):
+                    if(usuari == "E" or contra == "E" or contre == "E"):
+                        os.system('cls')
+                    elif(contra == contre):
                         mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0);")
                         Connector.dbConnection.commit()
-                    else: 
                         os.system('cls')
-                        print("usuari repetit")
-                    #mycursor.execute("select numero from repte")
-                    #myresult = mycursor.fetchall()
-                    #for x in myresult:
-                        #mycursor.execute("select id from preguntes where numero_repte = " + str(x[0]))
-                        #myresult = mycursor.fetchall()
-                        #for m in myresult:
-                            #mycursor.execute("insert into users_repte values(\"" + usuari + "\", " + str(x[0]) + ", " + str(m[0]) + ", 0);" );
-                            #Connector.dbConnection.commit()
+                        print("USUARI CREAT AMB EXIT")
+                    else:
+                        os.system('cls')
+                        print("Hi ha hagut algun error\n")
                 else:
                     os.system('cls')
-                    print("Ha hagut algun error")
             else:
                 os.system('cls')
         else:
             os.system('cls')
-    else:
+    else: 
         os.system('cls')
+        print("Aquest nom d'usuari ja existeix\n")
+    
 
   #  def comprovarusuari(mysursor):
         

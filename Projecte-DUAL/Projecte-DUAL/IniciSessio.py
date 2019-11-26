@@ -61,9 +61,15 @@ def Menu3(usuari, contras, mycursor):
                 conector = Connector.dbConnection.cursor()
                 conector.execute("select max(id_pregunta) from users_repte where users_usuari = \"" + usuari +"\" and num_repte = " + opcio2 )
                 guardar = conector.fetchone()
-                conector1 = Connector.dbConnection.cursor()
-                conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + str(opcio2) + " and id >" + str(guardar[0]))
-                guardar1 = conector1.fetchall()
+                if(guardar[0] != None):
+                    conector1 = Connector.dbConnection.cursor()
+                    conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + str(opcio2) + " and id >" + str(guardar[0]))
+                    guardar1 = conector1.fetchall()
+                else:
+                    conector1 = Connector.dbConnection.cursor()
+                    conector1.execute("select enunciat, id, resposta, puntuacio from preguntes where numero_repte = " + str(opcio2))
+                    guardar1 = conector1.fetchall()
+
                 for r in guardar1:
                     resp = ""
                     puntuacio = r[3]
@@ -75,7 +81,8 @@ def Menu3(usuari, contras, mycursor):
                             punttotal = punttotal + puntuacio
                             print(punttotal)
                             conector3 = Connector.dbConnection.cursor()
-                            conector3.execute("")#Actualitzar taula users_repte
+                            conector3.execute("insert into users_repte values('"+ usuari + "' , " + opcio2 + ", "+ str(r[1]) + ");")
+
                 
                         elif resp == "E":
                             Menu3(usuari, contras)
