@@ -57,7 +57,6 @@ def Menu3(usuari, contras, mycursor):
         cont = 0
         try:
             if(int(opcio2) == int(opcio2)):
-                print("ENTRA")
                 conector = Connector.dbConnection.cursor()
                 conector.execute("select max(id_pregunta) from users_repte where users_usuari = \"" + usuari +"\" and num_repte = " + opcio2 )
                 guardar = conector.fetchone()
@@ -112,15 +111,18 @@ def infousuari(usuari, contras, mycursor):
     print("Nickname:  " + usuari)
     print("     Reptes")
     print("===================")
-    mycursor.execute("select num_repte, count(fet) as \"LOL""\" from users_repte where fet = 1 AND users_usuari = \""+ usuari + "\"group by num_repte;")
+    mycursor.execute("select max(id), numero_repte from preguntes group by numero_repte;")
     myresult = mycursor.fetchall()
     for x in myresult:
-        mycursor.execute("select count(fet), num_repte from users_repte where users_usuari = \""+ usuari + "\" group by num_repte")
-        resolt = mycursor.fetchall()
-        for y in resolt:
-            if(str(myresult[0][0]) == str(y[1])):
-                print("Repte " + str(myresult[0][0]) +" " + str(myresult[0][1])+ "/" + str(y[0]))
-    opcio = (input("E for Exit --->"))
+        nuevo = Connector.dbConnection.cursor()
+        nuevo.execute("select max(id_pregunta) from users_repte where num_repte = \""+ str(x[1]) +"\" AND users_usuari = \"" + usuari + "\" ;")
+        nuevor = nuevo.fetchone()
+        if nuevor[0] == None:
+            print("Repte " + str(x[1]) + " 0/" + str(x[0]))
+        else:
+            print("Repte " + str(x[1]) + " " + str(nuevor[0]) + "/" + str(x[0]))
+    nuevo.close;
+    opcio = (input("EXIT --> E : "))
     if(opcio != "E"):
         os.system('cls')
         infousuari(usuari, contras, mycursor)
