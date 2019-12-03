@@ -50,9 +50,9 @@ def Menu3(usuari, contras, mycursor):
             if(sip == None):
                 print(str(x[0]) +"--> Repte " + str(x[0]))
                 # TANCAR CONEXIONS
-        print("I --> Informacio d'usuari")
+        print("I--> Informacio d'usuari")
         print("R--> Ranking")
-        print("T --> Tancar Sessió")
+        print("T--> Tancar Sessió")
         opcio2 = (input("OPCIO -->"))
         cont = 0
         try:

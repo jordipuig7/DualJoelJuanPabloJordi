@@ -18,7 +18,7 @@ def crearUsuari(mycursor):
                     if(usuari == "E" or contra == "E" or contre == "E"):
                         os.system('cls')
                     elif(contra == contre):
-                        mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0);")
+                        mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0, default);")
                         Connector.dbConnection.commit()
                         os.system('cls')
                         print("USUARI CREAT AMB EXIT")
