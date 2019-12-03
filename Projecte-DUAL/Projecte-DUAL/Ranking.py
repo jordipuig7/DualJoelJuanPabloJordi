@@ -8,7 +8,7 @@ def Ranking(mycursor):
     myresult = mycursor.fetchall()
 
     for x in myresult:
-        print(str(cont) + "--> " + str(x[0]) + "     " + str(x[2]) + "PUNTS" + "\n")
+        print(str(cont) + "--> " + str(x[0]) + "     " + str(x[2]) + " PUNTS" + "\n")
         cont = cont + 1
     
     opcio = (input("E for Exit --->"))

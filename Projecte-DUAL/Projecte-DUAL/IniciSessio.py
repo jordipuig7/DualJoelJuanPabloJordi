@@ -1,5 +1,6 @@
 import Connector;
 import os;
+import Ranking;
 
 # -------------------------- INICI DE SESSIÓ -------------------------------
 
@@ -37,7 +38,6 @@ def Menu3(usuari, contras, mycursor):
         punttotal = 0
         print("     MENU")
         print("===============")
-        print("0 --> Reptes Fets")
         mycursor.execute("select numero from repte")
         myresult = mycursor.fetchall()
         for x in myresult:
@@ -56,7 +56,7 @@ def Menu3(usuari, contras, mycursor):
         opcio2 = (input("OPCIO -->"))
         cont = 0
         try:
-            if(int(opcio2) == int(opcio2)):
+            if(opcio2.isnumeric()):
                 conector = Connector.dbConnection.cursor()
                 conector.execute("select max(id_pregunta) from users_repte where users_usuari = \"" + usuari +"\" and num_repte = " + opcio2 )
                 guardar = conector.fetchone()
@@ -87,9 +87,7 @@ def Menu3(usuari, contras, mycursor):
                             Menu3(usuari, contras)
                         else:
                             print("FALLAT")
-        except :
-            os.system('cls')
-            if(opcio2 == "T"):
+            elif(opcio2 == "T"):
                 usuari = ""
                 contras = ""
                 os.system('cls')
@@ -97,6 +95,11 @@ def Menu3(usuari, contras, mycursor):
             elif (opcio2 == "I"):
                 os.system('cls')
                 infousuari(usuari, contras, mycursor);
+            elif (opcio2 == 'R'):
+                os.system('cls')
+                Ranking.Ranking(mycursor);
+        except :
+            os.system('cls')
         sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
         val = punttotal, usuari, contras
         mycursor.execute(sql, val)
