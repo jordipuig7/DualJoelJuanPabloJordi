@@ -10,12 +10,12 @@ def crearUsuari(mycursor):
     mycursor.execute("SELECT * FROM users where usuari = \"" + usuari + "\"")
     usuaris1 = mycursor.fetchall()
     if not usuaris1:
-        if (usuari != "E"):
+        if (usuari.casefold() != "E".casefold()):
             contra = (input("Contrasenya: "))
-            if (contra != "E"):
+            if (contra.casefold() != "E".casefold()):
                 contre = (input("Repeteix Contrasenya: "))
-                if (contre != "E"):
-                    if(usuari == "E" or contra == "E" or contre == "E"):
+                if (contre.casefold() != "E".casefold()):
+                    if(usuari.casefold() == "E".casefold() or contra.casefold() == "E".casefold() or contre.casefold() == "E".casefold()):
                         os.system('cls')
                     elif(contra == contre):
                         mycursor.execute("insert into users values(\"" + usuari + "\" ,\"" + contra + "\", 0, default);")
@@ -60,7 +60,7 @@ def eliminarusuari(mycursor):
         if ( str(x[0][0]) == usuari):
             print("Usuari Correcte")
             contras = (input("Contrasenya: "))
-            mycursor.execute("select contrasenya from users where contrasenya = \"" + contras + "\";")
+            mycursor.execute("select contrasenya from users where contrasenya = \"" + contras + "\" AND usuari = \"" + usuari + "\";")
             myresult = mycursor.fetchall()
             x = myresult
             if ( str(x[0][0]) == contras):

@@ -12,7 +12,7 @@ def Ranking(mycursor):
         cont = cont + 1
     
     opcio = (input("E for Exit --->"))
-    if(opcio != "E"):
+    if(opcio.casefold() != "E".casefold()):
         os.system('cls')
         Ranking(mycursor)
     else:

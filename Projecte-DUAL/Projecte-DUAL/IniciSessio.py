@@ -8,20 +8,19 @@ def iniciarsessio(mycursor):
     print("Iniciar sessió       E --> Exit")
     print("================================")
     usuari = (input("Usuari: "))
-    if (usuari != "E"):
+    if (usuari.casefold() != "E".casefold()):
         mycursor.execute("select usuari from users where usuari = \"" + usuari + "\";")
         myresult = mycursor.fetchall()
         try:
             if (str(myresult[0][0]) == usuari):
                 print("Usuari Correcte")
                 contras = input("Contrasenya: ")
-                if (contras != "E"):
+                if (contras.casefold() != "E".casefold()):
                     mycursor.execute("select contrasenya from users where contrasenya = \"" + contras + "\" AND usuari =\"" + usuari + "\"")
                     myresult = mycursor.fetchall()
                     x = myresult
                     if (str(x[0][0]) == contras ):
                         os.system('cls')
-                        print("Hola " + usuari)
                         Menu3(usuari, contras, mycursor);
                 else:
                     os.system('cls')
@@ -49,6 +48,7 @@ def Menu3(usuari, contras, mycursor):
             sip = segundo.fetchone()
             if(sip == None):
                 print(str(x[0]) +"--> Repte " + str(x[0]))
+                #.CASEFOLD() Minuscules mayuscules da igual preguntes
                 # TANCAR CONEXIONS
         print("I--> Informacio d'usuari")
         print("R--> Ranking")
@@ -57,6 +57,7 @@ def Menu3(usuari, contras, mycursor):
         cont = 0
         try:
             if(opcio2.isnumeric()):
+# CAMBIAR TOT PER MYCURSOR
                 conector = Connector.dbConnection.cursor()
                 conector.execute("select max(id_pregunta) from users_repte where users_usuari = \"" + usuari +"\" and num_repte = " + opcio2 )
                 guardar = conector.fetchone()
@@ -72,10 +73,10 @@ def Menu3(usuari, contras, mycursor):
                 for r in guardar1:
                     resp = ""
                     puntuacio = r[3]
-                    while resp != str(r[2]):
+                    while resp.casefold() != str(r[2]).casefold():
                         resp = input(str(r[0]))
                         print("E - Exit")
-                        if resp == str(r[2]):
+                        if resp.casefold() == str(r[2]).casefold():
                             print("ENCERT")
                             punttotal = punttotal + puntuacio
                             print(punttotal)
@@ -83,19 +84,19 @@ def Menu3(usuari, contras, mycursor):
                             conector3.execute("insert into users_repte values('"+ usuari + "' , " + opcio2 + ", "+ str(r[1]) + ");")
 
                 
-                        elif resp == "E":
+                        elif resp.casefold() == "E".casefold():
                             Menu3(usuari, contras)
                         else:
                             print("FALLAT")
-            elif(opcio2 == "T"):
+            elif(opcio2.casefold() == "T".casefold()):
                 usuari = ""
                 contras = ""
                 os.system('cls')
                 entrada = False;
-            elif (opcio2 == "I"):
+            elif (opcio2.casefold() == "I".casefold()):
                 os.system('cls')
                 infousuari(usuari, contras, mycursor);
-            elif (opcio2 == 'R'):
+            elif (opcio2.casefold() == 'R'.casefold()):
                 os.system('cls')
                 Ranking.Ranking(mycursor);
         except :
@@ -126,7 +127,7 @@ def infousuari(usuari, contras, mycursor):
             print("Repte " + str(x[1]) + " " + str(nuevor[0]) + "/" + str(x[0]))
     nuevo.close;
     opcio = (input("EXIT --> E : "))
-    if(opcio != "E"):
+    if(opcio.casefold() != "E".casefold()):
         os.system('cls')
         infousuari(usuari, contras, mycursor)
     else:
