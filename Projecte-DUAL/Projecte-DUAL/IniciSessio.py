@@ -53,6 +53,11 @@ def Menu3(usuari, contras, mycursor):
         print("I--> Informacio d'usuari")
         print("R--> Ranking")
         print("T--> Tancar Sessió")
+        admin = Connector.dbConnection.cursor()
+        admin.execute('Select administrador from users where usuari = \"' + usuari + '\"')
+        administrador = admin.fetchone()
+        if administrador[0] == 1:
+            print("C--> Crud de reptes")
         opcio2 = (input("OPCIO -->"))
         cont = 0
         try:
@@ -99,6 +104,9 @@ def Menu3(usuari, contras, mycursor):
             elif (opcio2.casefold() == 'R'.casefold()):
                 os.system('cls')
                 Ranking.Ranking(mycursor);
+            elif(opcio2 == 'C'.casefold() and administrador[0] == 1):
+                os.system('cls')
+                crudDeReptes(usuari, contras, mycursor);
         except :
             os.system('cls')
         sql = "update users set puntuacio = puntuacio + %s where usuari = %s AND contrasenya = %s"
@@ -132,3 +140,27 @@ def infousuari(usuari, contras, mycursor):
         infousuari(usuari, contras, mycursor)
     else:
         os.system('cls')
+
+#---------------------------CRUD DE REPTES---------------------------------------------
+def crudDeReptes(usuari, contras, mycursor):
+    cont = 1
+    print("CRUD DE REPTES")
+    print("===================")
+    print("1 --> Crear")
+    print("2 --> Modificar")
+    print("3 --> Eliminar")
+    print("4 --> Sortir")
+    opcio = input();
+    if opcio == "1":
+        mycursor.execute('select max(numero) from repte')
+        idRepte = mycursor.fetchone();
+        id = idRepte[0] + 1
+        creadors = input('Qui es el creador/s del repte?')
+        preg = input('Quantes preguntes vols inserir?')
+        while (int(preg) >= cont):
+            pregunta = input('Introdueix la pregunta:\n')
+            resposta = input('Introdueix la resposta:\n')
+            puntuacio = input('Introduieix la puntuacio:\n')
+            mycursor.execute("insert into repte values(" + str(id) + ", \"" + creadors + "\");")
+            mycursor.execute("insert into preguntes values(" + str(id) + ", " + str(cont) + ", \"" + pregunta + "\", \"" + resposta + "\", " + puntuacio + ");")
+            cont = cont + 1
